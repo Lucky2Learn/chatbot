@@ -1,0 +1,488 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AKSHA Buddy AI - Educational Institute Chatbot</title>
+  <style>
+    :root {
+      --primary-color: #4a6eb5;
+      --secondary-color: #6c757d;
+      --light-color: #f8f9fa;
+      --dark-color: #343a40;
+      --success-color: #28a745;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 20px;
+      border-radius: 10px 10px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+    }
+
+    .chat-container {
+      display: flex;
+      flex: 1;
+      background-color: white;
+      border-radius: 0 0 10px 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-right: 1px solid #e9ecef;
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .sidebar {
+        display: block;
+      }
+    }
+
+    .sidebar-item {
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .sidebar-item:hover {
+      background-color: #e9ecef;
+    }
+
+    .sidebar-item.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .chat-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
+    }
+
+    .message.bot {
+      align-self: flex-start;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .message-text {
+      padding: 12px 15px;
+      border-radius: 18px;
+      line-height: 1.5;
+    }
+
+    .bot .message-text {
+      background-color: #f0f2f5;
+      border-bottom-left-radius: 5px;
+    }
+
+    .user .message-text {
+      background-color: var(--primary-color);
+      color: white;
+      border-bottom-right-radius: 5px;
+    }
+
+    .message-info {
+      font-size: 0.75rem;
+      color: var(--secondary-color);
+      margin-top: 5px;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #ced4da;
+      border-radius: 24px;
+      outline: none;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .chat-input input:focus {
+      border-color: var(--primary-color);
+    }
+
+    .chat-input button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 24px;
+      padding: 12px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-input button:hover {
+      background-color: #3a5a9f;
+    }
+
+    .typing-indicator {
+      display: flex;
+      padding: 10px 0;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #ccc;
+      border-radius: 50%;
+      margin: 0 3px;
+      animation: typing 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .chat-controls {
+      display: flex;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    .control-button {
+      background-color: transparent;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 5px 10px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .control-button:hover {
+      background-color: #e9ecef;
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .quick-reply {
+      background-color: #f0f2f5;
+      border: 1px solid #ced4da;
+      border-radius: 24px;
+      padding: 8px 15px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .quick-reply:hover {
+      background-color: #e9ecef;
+    }
+
+    .resize {
+    width: 25px;
+    height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">
+          <img class="resize" src="./eduLogo.png"/></span>
+        </span>
+        <h1>AKSHA Buddy AI Assistant</h1>
+      </div>
+      <div>
+        <button class="control-button" id="clearChat">Clear Chat</button>
+      </div>
+    </div>
+
+    <div class="chat-container">
+      <div class="sidebar">
+        <h3>FAQ Topics</h3>
+        <div class="sidebar-item active">Admissions</div>
+        <div class="sidebar-item">Programs & Courses</div>
+        <div class="sidebar-item">Financial Aid</div>
+        <div class="sidebar-item">Campus Facilities</div>
+        <div class="sidebar-item">Student Services</div>
+        <div class="sidebar-item">Contact Information</div>
+      </div>
+
+      <div class="chat-box">
+        <div class="chat-messages" id="chat-messages">
+          <div class="message bot">
+            <div class="message-text">
+              👋 Hello! I'm your Educational Institute Assistant. How can I help you today? Feel free to ask about admissions, programs, financial aid, or any other information about our institute.
+            </div>
+            <div class="message-info">Today, 10:00 AM</div>
+          </div>
+        </div>
+        
+        <div class="quick-replies">
+          <div class="quick-reply" data-query="How do I apply for admission?">How do I apply for admission?</div>
+          <div class="quick-reply" data-query="What programs do you offer?">What programs do you offer?</div>
+          <div class="quick-reply" data-query="Tell me about financial aid">Tell me about financial aid</div>
+          <div class="quick-reply" data-query="Campus tour information">Campus tour information</div>
+        </div>
+
+        <div class="chat-input">
+          <input type="text" id="user-input" placeholder="Type your question here..." autocomplete="off">
+          <button id="send-button">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatMessages = document.getElementById('chat-messages');
+      const userInput = document.getElementById('user-input');
+      const sendButton = document.getElementById('send-button');
+      const clearButton = document.getElementById('clearChat');
+      const quickReplies = document.querySelectorAll('.quick-reply');
+      
+      // Sample responses for the educational institute chatbot
+      const botResponses = {
+        "admission": "Our admission process is simple! You need to fill out an online application form, submit your academic transcripts, and possibly take an entrance exam depending on the program. The application deadline for the fall semester is June 15th. Would you like me to send you the link to the application portal?",
+        "apply": "To apply, visit our website at www.eduinstitute.edu/apply, create an account, and follow the prompts to complete your application. Make sure to have your transcripts, test scores, and a personal statement ready to upload.",
+        "programs": "We offer a wide range of undergraduate and graduate programs including Computer Science, Business Administration, Engineering, Arts & Humanities, Healthcare, and many more. Which specific field are you interested in?",
+        "courses": "Our institute offers over 200 courses across different disciplines. Popular ones include Data Science, Digital Marketing, Machine Learning, Sustainable Design, and Clinical Psychology. Would you like information on a specific department?",
+        "financial aid": "We offer various financial aid options including scholarships, grants, work-study programs, and loans. Approximately 70% of our students receive some form of financial assistance. The FAFSA deadline for priority consideration is March 1st.",
+        "scholarship": "We have merit-based scholarships ranging from $2,000 to full tuition, as well as need-based scholarships. The Academic Excellence Scholarship rewards students with a GPA of 3.8 or higher. Applications for scholarships open in January each year.",
+        "campus": "Our campus spans 150 acres with modern facilities including smart classrooms, research labs, a library with over 1 million volumes, student recreation center, performing arts center, and multiple dining options. We also offer virtual tours of our campus.",
+        "housing": "On-campus housing includes traditional dormitories, suite-style residences, and apartments. All first-year students are guaranteed housing. Room rates range from $3,500 to $6,000 per semester depending on the type of accommodation.",
+        "faculty": "Our institute has over 500 full-time faculty members, with more than 85% holding doctoral degrees in their fields. Our student-to-faculty ratio is 15:1, ensuring personalized attention in your educational journey.",
+        "online": "We offer fully online degree programs as well as hybrid options. All online students have access to the same resources as on-campus students, including virtual tutoring, library services, and career counseling.",
+        "transfer": "Transfer students must have a minimum GPA of 2.5 from their previous institution. We accept up to 60 transfer credits for undergraduate programs. Our transfer credit evaluation tool can help you see which of your credits will transfer.",
+        "deadline": "Application deadlines vary by program. Generally, the fall semester deadline is June 15th, spring semester is November 15th, and summer session is April 1st. Early application is recommended for priority consideration.",
+        "contact": "You can reach our Admissions Office at admissions@eduinstitute.edu or call (555) 123-4567. Our office is open Monday through Friday, 8:00 AM to 5:00 PM. For urgent matters, we also offer live chat on our website.",
+        "tour": "We offer campus tours Monday through Saturday at 10:00 AM and 2:00 PM. Virtual tours are available 24/7 on our website. To schedule an in-person tour, please register at www.eduinstitute.edu/visit at least 48 hours in advance.",
+        "testing": "Depending on your program, you may need to submit SAT/ACT scores for undergraduate admission or GRE/GMAT for graduate programs. We also offer placement tests for mathematics and foreign languages.",
+        "graduation": "Our overall graduation rate is 82% within six years. Career services reports that 93% of our graduates are employed or in graduate school within six months of graduation.",
+        "international": "International students comprise about 15% of our student body from over 70 countries. We provide specialized support services including visa assistance, cultural adaptation programs, and English language support.",
+        "accreditation": "Our institute is accredited by the Higher Learning Commission. Individual programs may have additional accreditations from field-specific organizations.",
+        "hello": "Hello! How can I assist you with information about our educational institute today?",
+        "hi": "Hi there! How can I help you with your educational journey?",
+        "default": "I don't have specific information on that topic yet. Please contact our admissions office at admissions@eduinstitute.edu or call (555) 123-4567 for more detailed information."
+      };
+
+      // Function to get bot response based on user input
+      function getBotResponse(userText) {
+        userText = userText.toLowerCase();
+        
+        for (const [keyword, response] of Object.entries(botResponses)) {
+          if (userText.includes(keyword)) {
+            return response;
+          }
+        }
+        
+        return botResponses.default;
+      }
+
+      // Function to add a message to the chat
+      function addMessage(text, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+        
+        const messageText = document.createElement('div');
+        messageText.className = 'message-text';
+        messageText.textContent = text;
+        
+        const messageInfo = document.createElement('div');
+        messageInfo.className = 'message-info';
+        const now = new Date();
+        messageInfo.textContent = `Today, ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+        
+        messageDiv.appendChild(messageText);
+        messageDiv.appendChild(messageInfo);
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Function to show typing indicator
+      function showTypingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.className = 'message bot';
+        indicator.id = 'typing-indicator';
+        
+        const indicatorContent = document.createElement('div');
+        indicatorContent.className = 'typing-indicator';
+        
+        for (let i = 0; i < 3; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'typing-dot';
+          indicatorContent.appendChild(dot);
+        }
+        
+        indicator.appendChild(indicatorContent);
+        chatMessages.appendChild(indicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Function to remove typing indicator
+      function removeTypingIndicator() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) {
+          indicator.remove();
+        }
+      }
+
+      // Function to handle sending a message
+      function sendMessage() {
+        const userMessage = userInput.value.trim();
+        
+        if (userMessage) {
+          addMessage(userMessage, true);
+          userInput.value = '';
+          
+          // Show typing indicator
+          showTypingIndicator();
+          
+          // Simulate bot thinking and typing with a delay
+          setTimeout(() => {
+            removeTypingIndicator();
+            const botResponse = getBotResponse(userMessage);
+            addMessage(botResponse);
+          }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+        }
+      }
+
+      // Event listeners
+      sendButton.addEventListener('click', sendMessage);
+      
+      userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+      
+      clearButton.addEventListener('click', function() {
+        // Keep only the welcome message
+        while (chatMessages.children.length > 1) {
+          chatMessages.removeChild(chatMessages.lastChild);
+        }
+      });
+      
+      // Quick reply functionality
+      quickReplies.forEach(reply => {
+        reply.addEventListener('click', function() {
+          const query = this.getAttribute('data-query');
+          userInput.value = query;
+          sendMessage();
+        });
+      });
+      
+      // Sidebar item functionality
+      const sidebarItems = document.querySelectorAll('.sidebar-item');
+      sidebarItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // Remove active class from all items
+          sidebarItems.forEach(i => i.classList.remove('active'));
+          
+          // Add active class to clicked item
+          this.classList.add('active');
+          
+          // Set up a query based on the sidebar item
+          const topic = this.textContent;
+          userInput.value = `Tell me about ${topic}`;
+          sendMessage();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
