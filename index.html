@@ -1,0 +1,517 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AKSHA Buddy AI AI - Smart Chatbot for Education & Business</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #f8fafc; color: #111827; }
+    header { background: #1d4ed8; color: white; padding: 40px 20px; text-align: center; }
+    header h1 { margin: 0; font-size: 2.5rem; }
+    header p { margin-top: 10px; font-size: 1.2rem; }
+    .section { padding: 60px 20px; max-width: 1100px; margin: auto; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 30px; }
+    .feature { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    .feature h3 { margin-top: 0; }
+    .cta { text-align: center; margin-top: 40px; }
+    .cta a { background: #1d4ed8; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 20px; }
+    form { background: white; padding: 20px; border-radius: 12px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    input, textarea, button { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; }
+    button { background: #1d4ed8; color: white; border: none; cursor: pointer; font-weight: 600; }
+    button:hover { background: #2563eb; }
+    .testimonials, .customers, .pricing { margin-top: 60px; }
+    .testimonial-card, .customer-logo, .pricing-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .testimonial-card p { font-style: italic; }
+    .testimonial-card strong { display: block; margin-top: 10px; }
+    .pricing-cards { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+    .pricing-card { padding: 30px; text-align: center; width: 280px; border: 2px solid #1d4ed8; }
+    .pricing-card.premium { background: #1d4ed8; color: white; }
+    .pricing-card h3 { margin-bottom: 10px; }
+    .pricing-card ul { list-style: none; padding: 0; text-align: left; }
+    .pricing-card ul li { margin-bottom: 10px; }
+    footer { background: #1e293b; color: #cbd5e1; text-align: center; padding: 30px 20px; }
+
+    .resize {
+    width: 150px;
+    height: 45px;
+    height: auto;
+    vertical-align:bottom;
+    }
+
+    .resize1 {
+    width: 25px;
+    height: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+       <h1><img class="resize" src="./ai.png"/>&nbsp;&nbsp; AKSHA Buddy AI</h1>
+    <p>Smart WhatsApp & Social Media Chatbot for Educational Institutes & Businesses</p>
+  </header>
+
+  <div class="section">
+    <h2>Automate Conversations, Capture Leads & Delight Users</h2>
+    <p>AKSHA Buddy AI helps you respond instantly on WhatsApp, Instagram, Facebook & Telegram. Whether you're a school, university, or business — engage your audience 24/7 and never miss a lead again.</p>
+
+    <div class="features">
+      <div class="feature">
+        <h3>Multi-Channel Integration</h3>
+        <p>Connect with your users across WhatsApp, Instagram, Facebook Messenger, and Telegram with a unified chatbot experience.</p>
+      </div>
+      <div class="feature">
+        <h3>Smart AI Responses</h3>
+        <p>Powered by AI for accurate, natural responses to student queries, business FAQs, and service-related information.</p>
+      </div>
+      <div class="feature">
+        <h3>Lead Capture & CRM</h3>
+        <p>Collect phone numbers, emails, and inquiry details directly from chats and manage them on a real-time dashboard.</p>
+      </div>
+      <div class="feature">
+        <h3>Custom Dashboard</h3>
+        <p>Monitor conversation history, analyze user behavior, download leads, and customize your bot flow — all from a simple web app.</p>
+      </div>
+      <div class="feature">
+        <h3>Plug & Play API</h3>
+        <p>Easy integration with your website, app, or existing CRM systems using our API endpoints and webhooks.</p>
+      </div>
+      <div class="feature">
+        <h3>Multilingual Support</h3>
+        <p>Serve users in English, Hindi, Gujarati, Tamil, and more — making your chatbot truly local.</p>
+      </div>
+    </div>
+
+    <div class="customers">
+      <h2>Trusted by Leading Institutions</h2>
+      <div class="features">
+        <div class="customer-logo">Green Valley International School</div>
+        <div class="customer-logo">Smart Learn Academy</div>
+        <div class="customer-logo">Eazy Edu Services</div>
+        <div class="customer-logo">Bright Minds Institute</div>
+      </div>
+    </div>
+
+    <div class="testimonials">
+      <h2>What Our Customers Say</h2>
+      <div class="testimonial-card">
+        <p>“AKSHA Buddy AI has reduced our support load by 80%. Parents love the instant answers on WhatsApp!”</p>
+        <strong>— Principal, Green Valley International</strong>
+      </div>
+      <div class="testimonial-card">
+        <p>“We’re getting 3x more leads thanks to AKSHA Buddy AI’s multilingual support and dashboard insights.”</p>
+        <strong>— Director, Smart Learn Academy</strong>
+      </div>
+    </div>
+
+    
+
+    <div class="cta">
+      <h2>Ready to automate your conversations?</h2>
+      <a href="#book-demo">Book a Free Demo</a>
+
+      <form id="book-demo">
+        <h3>Book Your Demo</h3>
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Email Address" required />
+        <input type="tel" placeholder="Phone Number" required />
+        <textarea placeholder="Tell us about your business or institute..." rows="4"></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+ 
+<!-- Educational Chatbot Widget with Timestamps Start -->
+<div class="edu-chat-widget-button" id="eduChatWidgetButton">💬</div>
+
+<div class="edu-chat-widget-container" id="eduChatWidgetContainer">
+  <div class="edu-chat-widget-header">
+    <div class="edu-chat-widget-title">
+      <span class="logo-icon">
+        <img class="resize1" src="./ai_logo-01.png"/></span>
+      </span>
+      <span>AKSHA Buddy AI Assistant</span>
+    </div>
+    <span class="edu-chat-widget-close" id="eduChatWidgetClose">×</span>
+  </div>
+  
+  <div class="edu-chat-widget-messages" id="eduChatWidgetMessages">
+    <div class="edu-chat-widget-message-wrapper bot">
+      <div class="edu-chat-widget-message">
+        👋 Hello! I'm your Educational Institute Assistant. How can I help you today?
+      </div>
+      <div class="edu-chat-widget-timestamp" id="welcomeTimestamp"></div>
+    </div>
+  </div>
+  
+  <div class="edu-chat-widget-quick-replies" id="eduChatWidgetQuickReplies">
+    <div class="edu-chat-widget-quick-reply" data-query="How do I apply for admission?">How do I apply?</div>
+    <div class="edu-chat-widget-quick-reply" data-query="What programs do you offer?">Programs</div>
+    <div class="edu-chat-widget-quick-reply" data-query="Tell me about financial aid">Financial Aid</div>
+  </div>
+  
+  <div class="edu-chat-widget-input">
+    <input type="text" id="eduChatWidgetInput" placeholder="Type your question..." autocomplete="off">
+    <button id="eduChatWidgetSend"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+</div>
+
+<style>
+
+
+  .edu-chat-widget-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #1d4ed8;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    font-size: 24px;
+    transition: all 0.3s ease;
+  }
+
+  .edu-chat-widget-button:hover {
+    transform: scale(1.1);
+  }
+
+  .edu-chat-widget-container {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+  }
+
+  .edu-chat-widget-header {
+    background-color: #1d4ed8;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .edu-chat-widget-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+
+  .edu-chat-widget-close {
+    cursor: pointer;
+    font-size: 22px;
+  }
+
+  .edu-chat-widget-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .edu-chat-widget-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    margin-bottom: 15px;
+  }
+
+  .edu-chat-widget-message-wrapper.bot {
+    align-self: flex-start;
+  }
+
+  .edu-chat-widget-message-wrapper.user {
+    align-self: flex-end;
+  }
+
+  .edu-chat-widget-message {
+    padding: 12px 15px;
+    border-radius: 18px;
+    line-height: 1.5;
+    font-size: 14px;
+    word-wrap: break-word;
+  }
+
+  .edu-chat-widget-message-wrapper.bot .edu-chat-widget-message {
+    background-color: #f0f2f5;
+    border-bottom-left-radius: 5px;
+  }
+
+  .edu-chat-widget-message-wrapper.user .edu-chat-widget-message {
+    background-color: #1d4ed8;
+    color: white;
+    border-bottom-right-radius: 5px;
+  }
+
+  .edu-chat-widget-timestamp {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 5px;
+    align-self: flex-start;
+  }
+
+  .edu-chat-widget-message-wrapper.user .edu-chat-widget-timestamp {
+    align-self: flex-end;
+  }
+
+  .edu-chat-widget-quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 15px;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .edu-chat-widget-quick-reply {
+    background-color: #f0f2f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 8px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .edu-chat-widget-quick-reply:hover {
+    background-color: #e9ecef;
+  }
+
+  .edu-chat-widget-input {
+    display: flex;
+    padding: 10px 15px;
+    border-top: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+  }
+
+  .edu-chat-widget-input input {
+    flex: 1;
+    border: 1px solid #ced4da;
+    padding: 10px 15px;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .edu-chat-widget-input button {
+    width: 40px;
+    height: 40px;
+    background-color: #1d4ed8;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .edu-chat-widget-typing {
+    display: flex;
+    padding: 10px 0;
+  }
+
+  .edu-chat-widget-typing-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: typing 1.4s infinite ease-in-out;
+  }
+
+  .edu-chat-widget-typing-dot:nth-child(1) { animation-delay: 0s; }
+  .edu-chat-widget-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .edu-chat-widget-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Elements
+    const widgetButton = document.getElementById('eduChatWidgetButton');
+    const widgetContainer = document.getElementById('eduChatWidgetContainer');
+    const widgetClose = document.getElementById('eduChatWidgetClose');
+    const widgetMessages = document.getElementById('eduChatWidgetMessages');
+    const widgetInput = document.getElementById('eduChatWidgetInput');
+    const widgetSend = document.getElementById('eduChatWidgetSend');
+    const quickReplies = document.querySelectorAll('.edu-chat-widget-quick-reply');
+    
+    // Set welcome message timestamp
+    const welcomeTimestamp = document.getElementById('welcomeTimestamp');
+    const initialTime = new Date();
+    welcomeTimestamp.textContent = `Today, ${initialTime.getHours()}:${initialTime.getMinutes().toString().padStart(2, '0')}`;
+    
+    // Toggle widget visibility
+    widgetButton.addEventListener('click', function() {
+      widgetContainer.style.display = 'flex';
+      widgetButton.style.display = 'none';
+    });
+    
+    widgetClose.addEventListener('click', function() {
+      widgetContainer.style.display = 'none';
+      widgetButton.style.display = 'flex';
+    });
+    
+    // Function to get formatted timestamp
+    function getTimestamp() {
+      const now = new Date();
+      return `Today, ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+    }
+    
+    // Educational institute chatbot responses
+    const botResponses = {
+      "admission": "Our admission process is simple! You need to fill out an online application form, submit your academic transcripts, and possibly take an entrance exam depending on the program. The application deadline for the fall semester is June 15th.",
+      "apply": "To apply, visit our website at www.eduinstitute.edu/apply, create an account, and follow the prompts to complete your application. Make sure to have your transcripts, test scores, and a personal statement ready to upload.",
+      "programs": "We offer a wide range of undergraduate and graduate programs including Computer Science, Business Administration, Engineering, Arts & Humanities, Healthcare, and many more. Which specific field are you interested in?",
+      "courses": "Our institute offers over 200 courses across different disciplines. Popular ones include Data Science, Digital Marketing, Machine Learning, Sustainable Design, and Clinical Psychology.",
+      "financial aid": "We offer various financial aid options including scholarships, grants, work-study programs, and loans. Approximately 70% of our students receive some form of financial assistance.",
+      "scholarship": "We have merit-based scholarships ranging from $2,000 to full tuition, as well as need-based scholarships. The Academic Excellence Scholarship rewards students with a GPA of 3.8 or higher.",
+      "campus": "Our campus spans 150 acres with modern facilities including smart classrooms, research labs, a library with over 1 million volumes, student recreation center, performing arts center, and multiple dining options.",
+      "deadline": "Application deadlines vary by program. Generally, the fall semester deadline is June 15th, spring semester is November 15th, and summer session is April 1st. Early application is recommended.",
+      "contact": "You can reach our Admissions Office at admissions@eduinstitute.edu or call (555) 123-4567. Our office is open Monday through Friday, 8:00 AM to 5:00 PM.",
+      "tour": "We offer campus tours Monday through Saturday at 10:00 AM and 2:00 PM. Virtual tours are available 24/7 on our website.",
+      "hello": "Hello! How can I assist you with information about our educational institute today?",
+      "hi": "Hi there! How can I help you with your educational journey?",
+      "default": "I don't have specific information on that topic yet. Please contact our admissions office at admissions@eduinstitute.edu for more detailed information."
+    };
+    
+    // Function to get bot response
+    function getBotResponse(userText) {
+      userText = userText.toLowerCase();
+      
+      for (const [keyword, response] of Object.entries(botResponses)) {
+        if (userText.includes(keyword)) {
+          return response;
+        }
+      }
+      
+      return botResponses.default;
+    }
+    
+    // Add message to chat
+    function addMessage(text, isUser) {
+      const wrapperDiv = document.createElement('div');
+      wrapperDiv.className = `edu-chat-widget-message-wrapper ${isUser ? 'user' : 'bot'}`;
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'edu-chat-widget-message';
+      messageDiv.textContent = text;
+      
+      const timestampDiv = document.createElement('div');
+      timestampDiv.className = 'edu-chat-widget-timestamp';
+      timestampDiv.textContent = getTimestamp();
+      
+      wrapperDiv.appendChild(messageDiv);
+      wrapperDiv.appendChild(timestampDiv);
+      
+      widgetMessages.appendChild(wrapperDiv);
+      widgetMessages.scrollTop = widgetMessages.scrollHeight;
+    }
+    
+    // Show typing indicator
+    function showTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'edu-chat-widget-message-wrapper bot';
+      typingDiv.id = 'typingIndicator';
+      
+      const typingContent = document.createElement('div');
+      typingContent.className = 'edu-chat-widget-typing';
+      
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'edu-chat-widget-typing-dot';
+        typingContent.appendChild(dot);
+      }
+      
+      typingDiv.appendChild(typingContent);
+      widgetMessages.appendChild(typingDiv);
+      widgetMessages.scrollTop = widgetMessages.scrollHeight;
+    }
+    
+    // Remove typing indicator
+    function removeTypingIndicator() {
+      const indicator = document.getElementById('typingIndicator');
+      if (indicator) indicator.remove();
+    }
+    
+    // Send message function
+    function sendMessage() {
+      const userMessage = widgetInput.value.trim();
+      
+      if (userMessage) {
+        // Add user message
+        addMessage(userMessage, true);
+        widgetInput.value = '';
+        
+        // Show typing effect
+        showTypingIndicator();
+        
+        // Generate response after a delay
+        setTimeout(() => {
+          removeTypingIndicator();
+          const botResponse = getBotResponse(userMessage);
+          addMessage(botResponse, false);
+        }, 1000 + Math.random() * 1000);
+      }
+    }
+    
+    // Event listeners
+    widgetSend.addEventListener('click', sendMessage);
+    
+    widgetInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+    
+    // Quick reply functionality
+    quickReplies.forEach(reply => {
+      reply.addEventListener('click', function() {
+        const query = this.getAttribute('data-query');
+        addMessage(query, true);
+        
+        // Show typing effect
+        showTypingIndicator();
+        
+        // Generate response after a delay
+        setTimeout(() => {
+          removeTypingIndicator();
+          const botResponse = getBotResponse(query);
+          addMessage(botResponse, false);
+        }, 1000 + Math.random() * 1000);
+      });
+    });
+  });
+</script>
+<!-- Educational Chatbot Widget End -->
+
+  <footer>
+    <p>&copy; 2025 by Aksha Innovators. Built for smarter conversations.</p>
+    <p>191, 2nd Floor, Appanna Building, K V Byregowda Circle, Jakkuru, Bengaluru-560064</p>
+    <p>+91 72597 95999 ,connect@akshainnovators.com</p>
+  </footer>
+</body>
+</html>
