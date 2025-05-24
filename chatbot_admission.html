@@ -1,0 +1,1396 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AKSHA Buddy AI - Smart Chatbot for Education & Business</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #f8fafc; color: #111827; }
+    header { background: #1d4ed8; color: white; padding: 40px 20px; text-align: center; }
+    header h1 { margin: 0; font-size: 2.5rem; }
+    header p { margin-top: 10px; font-size: 1.2rem; }
+    .section { padding: 60px 20px; max-width: 1100px; margin: auto; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 30px; }
+    .feature { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    .feature h3 { margin-top: 0; }
+    .cta { text-align: center; margin-top: 40px; }
+    .cta a { background: #1d4ed8; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 20px; }
+    form { background: white; padding: 20px; border-radius: 12px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+    input, textarea, button, select { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 1rem; }
+    button { background: #1d4ed8; color: white; border: none; cursor: pointer; font-weight: 600; }
+    button:hover { background: #2563eb; }
+    .testimonials, .customers, .pricing { margin-top: 60px; }
+    .testimonial-card, .customer-logo, .pricing-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .testimonial-card p { font-style: italic; }
+    .testimonial-card strong { display: block; margin-top: 10px; }
+    .pricing-cards { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+    .pricing-card { padding: 30px; text-align: center; width: 280px; border: 2px solid #1d4ed8; }
+    .pricing-card.premium { background: #1d4ed8; color: white; }
+    .pricing-card h3 { margin-bottom: 10px; }
+    .pricing-card ul { list-style: none; padding: 0; text-align: left; }
+    .pricing-card ul li { margin-bottom: 10px; }
+    footer { background: #1e293b; color: #cbd5e1; text-align: center; padding: 30px 20px; }
+
+    .resize {
+      width: 150px;
+      height: 45px;
+      height: auto;
+      vertical-align: bottom;
+    }
+
+    .resize1 {
+      width: 25px;
+      height: auto;
+    }
+
+    /* Chatbot Widget Styles */
+    .edu-chat-widget-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background-color: #1d4ed8;
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 10000;
+      font-size: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .edu-chat-widget-button:hover {
+      transform: scale(1.1);
+    }
+
+    .edu-chat-widget-container {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 10000;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+    }
+
+    .edu-chat-widget-header {
+      background-color: #1d4ed8;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .edu-chat-widget-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .edu-chat-widget-close {
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+    .edu-chat-widget-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .edu-chat-widget-message-wrapper {
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
+      margin-bottom: 15px;
+    }
+
+    .edu-chat-widget-message-wrapper.bot {
+      align-self: flex-start;
+    }
+
+    .edu-chat-widget-message-wrapper.user {
+      align-self: flex-end;
+    }
+
+    .edu-chat-widget-message {
+      padding: 12px 15px;
+      border-radius: 18px;
+      line-height: 1.5;
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+
+    .edu-chat-widget-message-wrapper.bot .edu-chat-widget-message {
+      background-color: #f0f2f5;
+      border-bottom-left-radius: 5px;
+    }
+
+    .edu-chat-widget-message-wrapper.user .edu-chat-widget-message {
+      background-color: #1d4ed8;
+      color: white;
+      border-bottom-right-radius: 5px;
+    }
+
+    .edu-chat-widget-timestamp {
+      font-size: 0.75rem;
+      color: #6c757d;
+      margin-top: 5px;
+      align-self: flex-start;
+    }
+
+    .edu-chat-widget-message-wrapper.user .edu-chat-widget-timestamp {
+      align-self: flex-end;
+    }
+
+    .edu-chat-widget-quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0 15px;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .edu-chat-widget-quick-reply {
+      background-color: #f0f2f5;
+      border: 1px solid #e0e0e0;
+      border-radius: 16px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .edu-chat-widget-quick-reply:hover {
+      background-color: #e9ecef;
+    }
+
+    .edu-chat-widget-input {
+      display: flex;
+      padding: 10px 15px;
+      border-top: 1px solid #e9ecef;
+      background-color: #f8f9fa;
+    }
+
+    .edu-chat-widget-input input {
+      flex: 1;
+      border: 1px solid #ced4da;
+      padding: 10px 15px;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .edu-chat-widget-input button {
+      width: 40px;
+      height: 40px;
+      background-color: #1d4ed8;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      margin-left: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .edu-chat-widget-typing {
+      display: flex;
+      padding: 10px 0;
+    }
+
+    .edu-chat-widget-typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #ccc;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typing 1.4s infinite ease-in-out;
+    }
+
+    .edu-chat-widget-typing-dot:nth-child(1) { animation-delay: 0s; }
+    .edu-chat-widget-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .edu-chat-widget-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    /* Admission Form Styles */
+    .edu-chat-widget-form {
+      padding: 10px 15px;
+    }
+
+    .edu-chat-widget-form-step {
+      display: none;
+    }
+
+    .edu-chat-widget-form-step.active {
+      display: block;
+    }
+
+    .edu-chat-widget-form label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .edu-chat-widget-form input,
+    .edu-chat-widget-form select,
+    .edu-chat-widget-form textarea {
+      width: 100%;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    .edu-chat-widget-form-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    .edu-chat-widget-form-button {
+      padding: 8px 15px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      flex: 1;
+    }
+
+    .edu-chat-widget-form-button.primary {
+      background-color: #1d4ed8;
+      color: white;
+    }
+
+    .edu-chat-widget-form-button.secondary {
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    .edu-chat-widget-form-progress {
+      height: 4px;
+      background-color: #f0f2f5;
+      margin-bottom: 15px;
+      border-radius: 2px;
+    }
+
+    .edu-chat-widget-form-progress-bar {
+      height: 100%;
+      background-color: #1d4ed8;
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .edu-chat-widget-form-error {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: -8px;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .course-option {
+      background-color: #f0f2f5;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .course-option:hover {
+      background-color: #e9ecef;
+      border-color: #1d4ed8;
+    }
+
+    .course-option h4 {
+      margin: 0 0 5px 0;
+      color: #1d4ed8;
+    }
+
+    .course-option p {
+      margin: 0;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><img class="resize" src="./ai.png"/>   AKSHA Buddy AI</h1>
+    <p>Smart WhatsApp & Social Media Chatbot for Educational Institutes & Businesses</p>
+  </header>
+
+  <div class="section">
+    <h2>Automate Conversations, Capture Leads & Delight Users</h2>
+    <p>AKSHA Buddy AI helps you respond instantly on WhatsApp, Instagram, Facebook & Telegram. Whether you're a school, university, or business — engage your audience 24/7 and never miss a lead again.</p>
+
+    <div class="features">
+      <div class="feature">
+        <h3>Multi-Channel Integration</h3>
+        <p>Connect with your users across WhatsApp, Instagram, Facebook Messenger, and Telegram with a unified chatbot experience.</p>
+      </div>
+      <div class="feature">
+        <h3>Smart AI Responses</h3>
+        <p>Powered by AI for accurate, natural responses to student queries, business FAQs, and service-related information.</p>
+      </div>
+      <div class="feature">
+        <h3>Lead Capture & CRM</h3>
+        <p>Collect phone numbers, emails, and inquiry details directly from chats and manage them on a real-time dashboard.</p>
+      </div>
+      <div class="feature">
+        <h3>Custom Dashboard</h3>
+        <p>Monitor conversation history, analyze user behavior, download leads, and customize your bot flow — all from a simple web app.</p>
+      </div>
+      <div class="feature">
+        <h3>Plug & Play API</h3>
+        <p>Easy integration with your website, app, or existing CRM systems using our API endpoints and webhooks.</p>
+      </div>
+      <div class="feature">
+        <h3>Multilingual Support</h3>
+        <p>Serve users in English, Hindi, Gujarati, Tamil, and more — making your chatbot truly local.</p>
+      </div>
+    </div>
+
+    <div class="customers">
+      <h2>Trusted by Leading Institutions</h2>
+      <div class="features">
+        <div class="customer-logo">Green Valley International School</div>
+        <div class="customer-logo">Smart Learn Academy</div>
+        <div class="customer-logo">Eazy Edu Services</div>
+        <div class="customer-logo">Bright Minds Institute</div>
+      </div>
+    </div>
+
+    <div class="testimonials">
+      <h2>What Our Customers Say</h2>
+      <div class="testimonial-card">
+        <p>“AKSHA Buddy AI has reduced our support load by 80%. Parents love the instant answers on WhatsApp!”</p>
+        <strong>— Principal, Green Valley International</strong>
+      </div>
+      <div class="testimonial-card">
+        <p>“We're getting 3x more leads thanks to AKSHA Buddy AI's multilingual support and dashboard insights.”</p>
+        <strong>— Director, Smart Learn Academy</strong>
+      </div>
+    </div>
+
+    <div class="cta">
+      <h2>Ready to automate your conversations?</h2>
+      <a href="#book-demo">Book a Free Demo</a>
+
+      <form id="book-demo">
+        <h3>Book Your Demo</h3>
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Email Address" required />
+        <input type="tel" placeholder="Phone Number" required />
+        <textarea placeholder="Tell us about your business or institute..." rows="4"></textarea>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Educational Chatbot Widget with Timestamps Start -->
+  <div class="edu-chat-widget-button" id="eduChatWidgetButton">💬</div>
+
+  <div class="edu-chat-widget-container" id="eduChatWidgetContainer">
+    <div class="edu-chat-widget-header">
+      <div class="edu-chat-widget-title">
+        <span class="logo-icon">
+          <img class="resize1" src="./ai_logo-01.png"/>
+        </span>
+        <span>AKSHA Buddy AI Assistant</span>
+      </div>
+      <span class="edu-chat-widget-close" id="eduChatWidgetClose">×</span>
+    </div>
+    
+    <div class="edu-chat-widget-messages" id="eduChatWidgetMessages">
+      <div class="edu-chat-widget-message-wrapper bot">
+        <div class="edu-chat-widget-message">
+          👋 Hello! I'm your Educational Institute Assistant. How can I help you today?
+        </div>
+        <div class="edu-chat-widget-timestamp" id="welcomeTimestamp"></div>
+      </div>
+    </div>
+    
+    <div class="edu-chat-widget-quick-replies" id="eduChatWidgetQuickReplies">
+      <div class="edu-chat-widget-quick-reply" data-query="How do I apply for admission?">How do I apply?</div>
+      <div class="edu-chat-widget-quick-reply" data-query="What programs do you offer?">Programs</div>
+      <div class="edu-chat-widget-quick-reply" data-query="Tell me about financial aid">Financial Aid</div>
+      <div class="edu-chat-widget-quick-reply" data-query="Start Admission Process">Admission Form</div>
+    </div>
+    
+    <div class="edu-chat-widget-input">
+      <input type="text" id="eduChatWidgetInput" placeholder="Type your question..." autocomplete="off">
+      <button id="eduChatWidgetSend"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    
+    <!-- Admission Form Template -->
+    <div class="edu-chat-widget-form" id="admissionForm" style="display: none;">
+      <div class="edu-chat-widget-form-progress">
+        <div class="edu-chat-widget-form-progress-bar" id="formProgressBar"></div>
+      </div>
+      
+      <!-- Step 1: Personal Information -->
+      <div class="edu-chat-widget-form-step active" id="step1">
+        <h4>Personal Information</h4>
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Enter your full name">
+        <div class="edu-chat-widget-form-error" id="fullNameError"></div>
+        
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="Enter your email">
+        <div class="edu-chat-widget-form-error" id="emailError"></div>
+        
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number">
+        <div class="edu-chat-widget-form-error" id="phoneError"></div>
+        
+        <div class="edu-chat-widget-form-buttons">
+          <button class="edu-chat-widget-form-button secondary" id="cancelForm">Cancel</button>
+          <button class="edu-chat-widget-form-button primary" id="nextStep1">Next</button>
+        </div>
+      </div>
+      
+      <!-- Step 2: Academic Information (will be dynamically populated) -->
+      <div class="edu-chat-widget-form-step" id="step2"></div>
+      
+      <!-- Step 3: Additional Information -->
+      <div class="edu-chat-widget-form-step" id="step3">
+        <h4>Additional Information</h4>
+        <label for="address">Address</label>
+        <textarea id="address" rows="3" placeholder="Enter your full address"></textarea>
+        <div class="edu-chat-widget-form-error" id="addressError"></div>
+        
+        <label for="city">City</label>
+        <input type="text" id="city" placeholder="Enter your city">
+        <div class="edu-chat-widget-form-error" id="cityError"></div>
+        
+        <label for="state">State/Union Territory</label>
+        <select id="state" name="state">
+          <option value="" disabled selected>Select your state/UT</option>
+          <option value="Andhra Pradesh">Andhra Pradesh</option>
+          <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+          <option value="Assam">Assam</option>
+          <option value="Bihar">Bihar</option>
+          <option value="Chhattisgarh">Chhattisgarh</option>
+          <option value="Goa">Goa</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="Haryana">Haryana</option>
+          <option value="Himachal Pradesh">Himachal Pradesh</option>
+          <option value="Jharkhand">Jharkhand</option>
+          <option value="Karnataka">Karnataka</option>
+          <option value="Kerala">Kerala</option>
+          <option value="Madhya Pradesh">Madhya Pradesh</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Manipur">Manipur</option>
+          <option value="Meghalaya">Meghalaya</option>
+          <option value="Mizoram">Mizoram</option>
+          <option value="Nagaland">Nagaland</option>
+          <option value="Odisha">Odisha</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Rajasthan">Rajasthan</option>
+          <option value="Sikkim">Sikkim</option>
+          <option value="Tamil Nadu">Tamil Nadu</option>
+          <option value="Telangana">Telangana</option>
+          <option value="Tripura">Tripura</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          <option value="Uttarakhand">Uttarakhand</option>
+          <option value="West Bengal">West Bengal</option>
+          <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+          <option value="Chandigarh">Chandigarh</option>
+          <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+          <option value="Ladakh">Ladakh</option>
+          <option value="Lakshadweep">Lakshadweep</option>
+          <option value="Puducherry">Puducherry</option>
+        </select>
+        <div class="edu-chat-widget-form-error" id="stateError"></div>
+        
+        <div class="edu-chat-widget-form-buttons">
+          <button class="edu-chat-widget-form-button secondary" id="prevStep3">Previous</button>
+          <button class="edu-chat-widget-form-button primary" id="submitForm">Submit</button>
+        </div>
+      </div>
+      
+      <!-- Confirmation Message -->
+      <div class="edu-chat-widget-form-step" id="confirmationStep">
+        <div style="text-align: center; padding: 20px;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #28a745;">
+            <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18457 2.99721 7.13633 4.39828 5.49707C5.79935 3.85782 7.69279 2.71538 9.79619 2.24015C11.8996 1.76491 14.1003 1.98234 16.07 2.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h4>Application Submitted Successfully!</h4>
+          <p>Thank you for your interest in our institution. We've received your application and will contact you shortly.</p>
+          <p>Your application reference: <strong id="referenceNumber"></strong></p>
+          <div class="edu-chat-widget-form-buttons">
+            <button class="edu-chat-widget-form-button secondary" id="downloadPDF">Download Acknowledgment</button>
+            <button class="edu-chat-widget-form-button primary" id="closeForm">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 by Aksha Innovators. Built for smarter conversations.</p>
+    <p>191, 2nd Floor, Appanna Building, K V Byregowda Circle, Jakkuru, Bengaluru-560064</p>
+    <p>+91 72597 95999 ,connect@akshainnovators.com</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elements
+      const { jsPDF } = window.jspdf;
+      const widgetButton = document.getElementById('eduChatWidgetButton');
+      const widgetContainer = document.getElementById('eduChatWidgetContainer');
+      const widgetClose = document.getElementById('eduChatWidgetClose');
+      const widgetMessages = document.getElementById('eduChatWidgetMessages');
+      const widgetInput = document.getElementById('eduChatWidgetInput');
+      const widgetSend = document.getElementById('eduChatWidgetSend');
+      const quickRepliesContainer = document.getElementById('eduChatWidgetQuickReplies');
+      const admissionForm = document.getElementById('admissionForm');
+      const formProgressBar = document.getElementById('formProgressBar');
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
+      const confirmationStep = document.getElementById('confirmationStep');
+      const cancelForm = document.getElementById('cancelForm');
+      const nextStep1 = document.getElementById('nextStep1');
+      const prevStep3 = document.getElementById('prevStep3');
+      const submitForm = document.getElementById('submitForm');
+      const closeForm = document.getElementById('closeForm');
+      const downloadPDF = document.getElementById('downloadPDF');
+
+      // Form state
+      let currentStep = 1;
+      let selectedCourse = null;
+      let formData = {};
+      let referenceNumber = '';
+
+      // Set welcome message timestamp
+      const welcomeTimestamp = document.getElementById('welcomeTimestamp');
+      const initialTime = new Date();
+      welcomeTimestamp.textContent = `Today, ${initialTime.getHours()}:${initialTime.getMinutes().toString().padStart(2, '0')}`;
+
+      // Toggle widget visibility
+      widgetButton.addEventListener('click', function() {
+        widgetContainer.style.display = 'flex';
+        widgetButton.style.display = 'none';
+      });
+
+      widgetClose.addEventListener('click', function() {
+        widgetContainer.style.display = 'none';
+        widgetButton.style.display = 'flex';
+        resetForm();
+      });
+
+      // Function to get formatted timestamp
+      function getTimestamp() {
+        const now = new Date();
+        return `Today, ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+      }
+
+      // Course information database
+      const courses = {
+        "computer science": {
+          name: "Computer Science",
+          duration: "4 years",
+          requirements: "Maths in 12th grade",
+          specializations: ["AI", "Data Science", "Software Engineering"],
+          formFields: {
+            specialization: {
+              type: "select",
+              label: "Specialization",
+              options: ["AI", "Data Science", "Software Engineering", "Not decided yet"],
+              required: true
+            },
+            codingExperience: {
+              type: "text",
+              label: "Any prior coding experience?",
+              required: false
+            },
+            classXMarks: {
+              type: "number",
+              label: "Class X Board Marks (%)",
+              required: true
+            },
+            classXIIMarks: {
+              type: "number",
+              label: "Class XII Board Marks (%)",
+              required: true
+            }
+          }
+        },
+        "business administration": {
+          name: "Business Administration",
+          duration: "3 years",
+          requirements: "Any stream in 12th grade",
+          specializations: ["Marketing", "Finance", "HR"],
+          formFields: {
+            specialization: {
+              type: "select",
+              label: "Specialization",
+              options: ["Marketing", "Finance", "HR", "Not decided yet"],
+              required: true
+            },
+            classXMarks: {
+              type: "number",
+              label: "Class X Board Marks (%)",
+              required: true
+            },
+            classXIIMarks: {
+              type: "number",
+              label: "Class XII Board Marks (%)",
+              required: true
+            }
+          }
+        },
+        "engineering": {
+          name: "Engineering",
+          duration: "4 years",
+          requirements: "PCM in 12th grade",
+          branches: ["Mechanical", "Electrical", "Civil"],
+          formFields: {
+            branch: {
+              type: "select",
+              label: "Engineering Branch",
+              options: ["Mechanical", "Electrical", "Civil"],
+              required: true
+            },
+            jeeScore: {
+              type: "number",
+              label: "JEE Main Score (if applicable)",
+              required: false
+            },
+            classXMarks: {
+              type: "number",
+              label: "Class X Board Marks (%)",
+              required: true
+            },
+            classXIIMarks: {
+              type: "number",
+              label: "Class XII Board Marks (%)",
+              required: true
+            }
+          }
+        },
+        "arts": {
+          name: "Arts & Humanities",
+          duration: "3 years",
+          requirements: "Any stream in 12th grade",
+          disciplines: ["Literature", "History", "Fine Arts"],
+          formFields: {
+            discipline: {
+              type: "select",
+              label: "Main Discipline",
+              options: ["Literature", "History", "Fine Arts"],
+              required: true
+            },
+            classXMarks: {
+              type: "number",
+              label: "Class X Board Marks (%)",
+              required: true
+            },
+            classXIIMarks: {
+              type: "number",
+              label: "Class XII Board Marks (%)",
+              required: true
+            }
+          }
+        },
+        "healthcare": {
+          name: "Healthcare",
+          duration: "5 years",
+          requirements: "PCB in 12th grade",
+          programs: ["Medicine", "Nursing"],
+          formFields: {
+            program: {
+              type: "select",
+              label: "Healthcare Program",
+              options: ["Medicine", "Nursing"],
+              required: true
+            },
+            neetScore: {
+              type: "number",
+              label: "NEET Score (if applicable)",
+              required: false
+            },
+            classXMarks: {
+              type: "number",
+              label: "Class X Board Marks (%)",
+              required: true
+            },
+            classXIIMarks: {
+              type: "number",
+              label: "Class XII Board Marks (%)",
+              required: true
+            }
+          }
+        }
+      };
+
+      // Educational institute chatbot responses
+      const botResponses = {
+        "admission": "We offer admissions in various programs. Which course are you interested in?",
+        "apply": "Which program would you like to apply for? Here are our main offerings:",
+        "programs": "We offer: 1) Computer Science, 2) Business Administration, 3) Engineering, 4) Arts & Humanities, 5) Healthcare. Which one interests you?",
+        "courses": "Our institute offers over 200 courses across different disciplines. Popular ones include Data Science, Digital Marketing, Machine Learning, Sustainable Design, and Clinical Psychology.",
+        "financial aid": "We offer various financial aid options including scholarships, grants, work-study programs, and loans. Approximately 70% of our students receive some form of financial assistance.",
+        "scholarship": "We have merit-based scholarships ranging from $2,000 to full tuition, as well as need-based scholarships. The Academic Excellence Scholarship rewards students with a GPA of 3.8 or higher.",
+        "campus": "Our campus spans 150 acres with modern facilities including smart classrooms, research labs, a library with over 1 million volumes, student recreation center, performing arts center, and multiple dining options.",
+        "deadline": "Application deadlines vary by program. Generally, the fall semester deadline is June 15th, spring semester is November 15th, and summer session is April 1st. Early application is recommended.",
+        "contact": "You can reach our Admissions Office at admissions@eduinstitute.edu or call (555) 123-4567. Our office is open Monday through Friday, 8:00 AM to 5:00 PM.",
+        "tour": "We offer campus tours Monday through Saturday at 10:00 AM and 2:00 PM. Virtual tours are available 24/7 on our website.",
+        "hello": "Hello! How can I assist you with information about our educational institute today?",
+        "hi": "Hi there! How can I help you with your educational journey?",
+        "default": "I don't have specific information on that topic yet. Please contact our admissions office at admissions@eduinstitute.edu for more detailed information.",
+        "computer science": "Our Computer Science program focuses on software development, AI, and data science. Duration: 4 years. Would you like to start the admission process for Computer Science?",
+        "business administration": "Our Business Administration program covers management, marketing, and entrepreneurship. Duration: 3 years. Would you like to apply for Business Administration?",
+        "engineering": "We offer Engineering specializations in Mechanical, Electrical, and Civil. Duration: 4 years. Interested in applying for Engineering?",
+        "arts": "Our Arts & Humanities program includes Literature, History, and Fine Arts. Duration: 3 years. Should I start your application?",
+        "healthcare": "The Healthcare program prepares students for careers in Medicine and Nursing. Duration: 5 years. Would you like to begin your Healthcare application?"
+      };
+
+      // Function to reset quick replies to initial state
+      function resetQuickReplies() {
+        quickRepliesContainer.innerHTML = `
+          <div class="edu-chat-widget-quick-reply" data-query="How do I apply for admission?">How do I apply?</div>
+          <div class="edu-chat-widget-quick-reply" data-query="What programs do you offer?">Programs</div>
+          <div class="edu-chat-widget-quick-reply" data-query="Tell me about financial aid">Financial Aid</div>
+          <div class="edu-chat-widget-quick-reply" data-query="Start Admission Process">Admission Form</div>
+        `;
+        attachQuickReplyListeners();
+      }
+
+      // Function to get bot response
+      function getBotResponse(userText) {
+        userText = userText.toLowerCase();
+        let selectedCourse = null;
+
+        // Check for "no" or "yes" in the context of other queries
+        if (userText.includes('no') && userText.includes('other queries')) {
+          setTimeout(() => {
+            addMessage("Thank you for your time! Feel free to reach out if you have any future queries.", false);
+            resetQuickReplies();
+          }, 500);
+          return "";
+        }
+
+        if (userText.includes('yes') && userText.includes('other queries')) {
+          setTimeout(() => {
+            addMessage("Great! How can I assist you further?", false);
+            resetQuickReplies();
+          }, 500);
+          return "";
+        }
+
+        // Check if user mentioned a specific course
+        for (const courseKey in courses) {
+          if (userText.includes(courseKey)) {
+            selectedCourse = courseKey;
+            break;
+          }
+        }
+
+        // If user selected a course, offer to start admission
+        if (selectedCourse) {
+          const course = courses[selectedCourse];
+          setTimeout(() => {
+            addMessage(`Would you like to start the admission process for ${course.name}?`, false);
+            quickRepliesContainer.innerHTML = `
+              <div class="edu-chat-widget-quick-reply" data-query="Yes, start ${course.name} admission">Yes</div>
+              <div class="edu-chat-widget-quick-reply" data-query="No, show other courses">No</div>
+            `;
+            attachQuickReplyListeners();
+          }, 500);
+          return `${course.name} program details:\n- Duration: ${course.duration}\n- Requirements: ${course.requirements}\n- Specializations: ${course.specializations?.join(', ') || course.branches?.join(', ') || course.disciplines?.join(', ') || 'None'}`;
+        }
+
+        // Check for admission form triggers
+        if (
+          userText.includes('start admission') ||
+          userText.includes('begin application') ||
+          userText.includes('apply now') ||
+          (userText.includes('yes') && (userText.includes('admission') || userText.includes('apply')))
+        ) {
+          return "Which program would you like to apply for? (Computer Science, Business Administration, Engineering, Arts, Healthcare)";
+        }
+
+        // Default responses
+        for (const [keyword, response] of Object.entries(botResponses)) {
+          if (userText.includes(keyword)) {
+            return response;
+          }
+        }
+
+        return botResponses.default;
+      }
+
+      // Add message to chat
+      function addMessage(text, isUser) {
+        if (!text) return;
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.className = `edu-chat-widget-message-wrapper ${isUser ? 'user' : 'bot'}`;
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'edu-chat-widget-message';
+        messageDiv.textContent = text;
+        const timestampDiv = document.createElement('div');
+        timestampDiv.className = 'edu-chat-widget-timestamp';
+        timestampDiv.textContent = getTimestamp();
+        wrapperDiv.appendChild(messageDiv);
+        wrapperDiv.appendChild(timestampDiv);
+        widgetMessages.appendChild(wrapperDiv);
+        widgetMessages.scrollTop = widgetMessages.scrollHeight;
+      }
+
+      // Show typing indicator
+      function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'edu-chat-widget-message-wrapper bot';
+        typingDiv.id = 'typingIndicator';
+        const typingContent = document.createElement('div');
+        typingContent.className = 'edu-chat-widget-typing';
+        for (let i = 0; i < 3; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'edu-chat-widget-typing-dot';
+          typingContent.appendChild(dot);
+        }
+        typingDiv.appendChild(typingContent);
+        widgetMessages.appendChild(typingDiv);
+        widgetMessages.scrollTop = widgetMessages.scrollHeight;
+      }
+
+      // Remove typing indicator
+      function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+      }
+
+      // Attach quick reply listeners
+      function attachQuickReplyListeners() {
+        const quickReplies = document.querySelectorAll('.edu-chat-widget-quick-reply');
+        quickReplies.forEach(reply => {
+          reply.removeEventListener('click', quickReplyHandler); // Prevent duplicate listeners
+          reply.addEventListener('click', quickReplyHandler);
+        });
+      }
+
+      // Quick reply handler
+      function quickReplyHandler() {
+        const query = this.getAttribute('data-query');
+        addMessage(query, true);
+
+        if (query === 'No, any other queries?') {
+          setTimeout(() => {
+            addMessage("Thank you for your time! Feel free to reach out if you have any future queries.", false);
+            resetQuickReplies();
+          }, 500);
+          return;
+        }
+
+        if (query === 'Yes, continue queries') {
+          setTimeout(() => {
+            addMessage("Great! How can I assist you further?", false);
+            resetQuickReplies();
+          }, 500);
+          return;
+        }
+
+        if (query.startsWith('Yes, start ')) {
+          const courseName = query.replace('Yes, start ', '').replace(' admission', '').toLowerCase();
+          console.log('Starting admission for course:', courseName); // Debug
+          setTimeout(() => {
+            if (courses[courseName]) {
+              showAdmissionForm(courseName);
+              addMessage(`Starting ${courses[courseName].name} admission process...`, false);
+            } else {
+              addMessage("Sorry, that course is not available. Please choose another program.", false);
+              resetQuickReplies();
+            }
+          }, 500);
+          return;
+        }
+
+        if (query === 'No, show other courses') {
+          setTimeout(() => {
+            addMessage(botResponses.programs, false);
+            quickRepliesContainer.innerHTML = `
+              <div class="edu-chat-widget-quick-reply" data-query="Computer Science">Computer Science</div>
+              <div class="edu-chat-widget-quick-reply" data-query="Business Administration">Business Administration</div>
+              <div class="edu-chat-widget-quick-reply" data-query="Engineering">Engineering</div>
+              <div class="edu-chat-widget-quick-reply" data-query="Arts">Arts & Humanities</div>
+              <div class="edu-chat-widget-quick-reply" data-query="Healthcare">Healthcare</div>
+            `;
+            attachQuickReplyListeners();
+          }, 500);
+          return;
+        }
+
+        if (query === 'Start Admission Process') {
+          setTimeout(() => {
+            addMessage(botResponses.programs, false);
+            quickRepliesContainer.innerHTML = `
+              <div class="edu-chat-widget-quick-reply" data-query="Computer Science">Computer Science</div>
+              <div class="edu-chat-widget-quick-reply" data-query="Business Administration">Business Administration</div>
+              <div class="edu-chat-widget-quick-reply" data-query="Engineering">Engineering</div>
+              <div class="edu-chat-widget-quick-reply" data-query="Arts">Arts & Humanities</div>
+              <div class="edu-chat-widget-quick-reply" data-query="Healthcare">Healthcare</div>
+            `;
+            attachQuickReplyListeners();
+          }, 500);
+          return;
+        }
+
+        // Normalize query for course selection
+        const normalizedQuery = query.toLowerCase();
+        console.log('Processing query:', normalizedQuery); // Debug
+        if (courses[normalizedQuery]) {
+          setTimeout(() => {
+            addMessage(`Would you like to start the admission process for ${courses[normalizedQuery].name}?`, false);
+            quickRepliesContainer.innerHTML = `
+              <div class="edu-chat-widget-quick-reply" data-query="Yes, start ${normalizedQuery} admission">Yes</div>
+              <div class="edu-chat-widget-quick-reply" data-query="No, show other courses">No</div>
+            `;
+            attachQuickReplyListeners();
+          }, 500);
+          return;
+        }
+
+        showTypingIndicator();
+        setTimeout(() => {
+          removeTypingIndicator();
+          const botResponse = getBotResponse(query);
+          addMessage(botResponse, false);
+        }, 1000 + Math.random() * 1000);
+      }
+
+      // Send message function
+      function sendMessage() {
+        const userMessage = widgetInput.value.trim();
+        if (userMessage) {
+          addMessage(userMessage, true);
+          widgetInput.value = '';
+          showTypingIndicator();
+          setTimeout(() => {
+            removeTypingIndicator();
+            const botResponse = getBotResponse(userMessage);
+            addMessage(botResponse, false);
+          }, 1000 + Math.random() * 1000);
+        }
+      }
+
+      // Handle send button click
+      widgetSend.addEventListener('click', sendMessage);
+
+      // Handle enter key press
+      widgetInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+
+      // Initialize quick reply listeners
+      attachQuickReplyListeners();
+
+      // Show admission form
+      function showAdmissionForm(courseKey) {
+        if (!courses[courseKey]) return;
+        selectedCourse = courseKey;
+        currentStep = 1;
+        formData = {};
+        updateFormProgress();
+        populateStep2();
+        admissionForm.style.display = 'block';
+        widgetMessages.style.display = 'none';
+        quickRepliesContainer.style.display = 'none';
+        widgetInput.parentElement.style.display = 'none';
+      }
+
+      // Populate step 2 with course-specific fields
+      function populateStep2() {
+        step2.innerHTML = `<h4>Academic Information</h4>`;
+        const course = courses[selectedCourse];
+        for (const [fieldKey, field] of Object.entries(course.formFields)) {
+          const fieldId = `step2-${fieldKey}`;
+          const container = document.createElement('div');
+          container.innerHTML = `<label for="${fieldId}">${field.label}</label>`;
+          if (field.type === 'select') {
+            const select = document.createElement('select');
+            select.id = fieldId;
+            select.name = fieldKey;
+            field.options.forEach(option => {
+              const optionEl = document.createElement('option');
+              optionEl.value = option;
+              optionEl.textContent = option;
+              select.appendChild(optionEl);
+            });
+            container.appendChild(select);
+          } else {
+            const input = document.createElement(field.type === 'textarea' ? 'textarea' : 'input');
+            input.id = fieldId;
+            input.name = fieldKey;
+            input.type = field.type;
+            input.placeholder = `Enter ${field.label.toLowerCase()}`;
+            if (field.type === 'number') {
+              input.min = fieldKey.includes('Marks') ? '0' : undefined;
+              input.max = fieldKey.includes('Marks') ? '100' : undefined;
+            }
+            if (field.type === 'textarea') input.rows = 3;
+            container.appendChild(input);
+          }
+          container.innerHTML += `<div class="edu-chat-widget-form-error" id="${fieldId}Error"></div>`;
+          step2.appendChild(container);
+        }
+        const buttons = document.createElement('div');
+        buttons.className = 'edu-chat-widget-form-buttons';
+        buttons.innerHTML = `
+          <button class="edu-chat-widget-form-button secondary" id="prevStep2">Previous</button>
+          <button class="edu-chat-widget-form-button primary" id="nextStep2">Next</button>
+        `;
+        step2.appendChild(buttons);
+        document.getElementById('prevStep2').addEventListener('click', () => navigateForm(-1));
+        document.getElementById('nextStep2').addEventListener('click', () => {
+          if (validateStep2()) navigateForm(1);
+        });
+      }
+
+      // Update form progress bar
+      function updateFormProgress() {
+        const progress = ((currentStep - 1) / 3) * 100;
+        formProgressBar.style.width = `${progress}%`;
+      }
+
+      // Navigate form steps
+      function navigateForm(direction) {
+        if (direction === 1 && !validateCurrentStep()) return;
+        const steps = [step1, step2, step3];
+        steps[currentStep - 1].classList.remove('active');
+        currentStep += direction;
+        steps[currentStep - 1].classList.add('active');
+        updateFormProgress();
+      }
+
+      // Validate current step
+      function validateCurrentStep() {
+        if (currentStep === 1) return validateStep1();
+        if (currentStep === 2) return validateStep2();
+        if (currentStep === 3) return validateStep3();
+        return true;
+      }
+
+      // Validate step 1
+      function validateStep1() {
+        let isValid = true;
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\+?\d{10,15}$/;
+
+        document.getElementById('fullNameError').style.display = 'none';
+        document.getElementById('emailError').style.display = 'none';
+        document.getElementById('phoneError').style.display = 'none';
+
+        if (!fullName) {
+          document.getElementById('fullNameError').textContent = 'Full name is required';
+          document.getElementById('fullNameError').style.display = 'block';
+          isValid = false;
+        }
+        if (!email || !emailRegex.test(email)) {
+          document.getElementById('emailError').textContent = 'Valid email is required';
+          document.getElementById('emailError').style.display = 'block';
+          isValid = false;
+        }
+        if (!phone || !phoneRegex.test(phone)) {
+          document.getElementById('phoneError').textContent = 'Valid phone number is required';
+          document.getElementById('phoneError').style.display = 'block';
+          isValid = false;
+        }
+
+        if (isValid) {
+          formData.fullName = fullName;
+          formData.email = email;
+          formData.phone = phone;
+          console.log('Step 1 formData:', formData); // Debug
+        }
+        return isValid;
+      }
+
+      // Validate step 2
+      function validateStep2() {
+        let isValid = true;
+        const course = courses[selectedCourse];
+        for (const [fieldKey, field] of Object.entries(course.formFields)) {
+          const fieldId = `step2-${fieldKey}`;
+          const value = document.getElementById(fieldId).value.trim();
+          const errorEl = document.getElementById(`${fieldId}Error`);
+          errorEl.style.display = 'none';
+          if (field.required && !value) {
+            errorEl.textContent = `${field.label} is required`;
+            errorEl.style.display = 'block';
+            isValid = false;
+          } else if ((fieldKey === 'classXMarks' || fieldKey === 'classXIIMarks') && value) {
+            const marks = parseFloat(value);
+            if (marks < 0 || marks > 100) {
+              errorEl.textContent = `${field.label} must be between 0 and 100`;
+              errorEl.style.display = 'block';
+              isValid = false;
+            } else {
+              formData[fieldKey] = value;
+            }
+          } else if (value) {
+            formData[fieldKey] = value;
+          }
+        }
+        if (isValid) {
+          console.log('Step 2 formData:', formData); // Debug
+        }
+        return isValid;
+      }
+
+      // Validate step 3
+      function validateStep3() {
+        let isValid = true;
+        const address = document.getElementById('address').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const state = document.getElementById('state').value;
+
+        document.getElementById('addressError').style.display = 'none';
+        document.getElementById('cityError').style.display = 'none';
+        document.getElementById('stateError').style.display = 'none';
+
+        if (!address) {
+          document.getElementById('addressError').textContent = 'Address is required';
+          document.getElementById('addressError').style.display = 'block';
+          isValid = false;
+        }
+        if (!city) {
+          document.getElementById('cityError').textContent = 'City is required';
+          document.getElementById('cityError').style.display = 'block';
+          isValid = false;
+        }
+        if (!state) {
+          document.getElementById('stateError').textContent = 'State/Union Territory is required';
+          document.getElementById('stateError').style.display = 'block';
+          isValid = false;
+        }
+
+        if (isValid) {
+          formData.address = address;
+          formData.city = city;
+          formData.state = state;
+          console.log('Step 3 formData:', formData); // Debug
+        }
+        return isValid;
+      }
+
+      // Reset form and prompt for further queries
+      function resetForm() {
+        currentStep = 1;
+        formData = {};
+        selectedCourse = null;
+        referenceNumber = '';
+        step1.classList.add('active');
+        step2.classList.remove('active');
+        step3.classList.remove('active');
+        confirmationStep.classList.remove('active');
+        admissionForm.style.display = 'none';
+        widgetMessages.style.display = 'flex';
+        quickRepliesContainer.style.display = 'flex';
+        widgetInput.parentElement.style.display = 'flex';
+        updateFormProgress();
+        document.getElementById('fullName').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('phone').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('city').value = '';
+        document.getElementById('state').value = '';
+        document.getElementById('fullNameError').style.display = 'none';
+        document.getElementById('emailError').style.display = 'none';
+        document.getElementById('phoneError').style.display = 'none';
+        document.getElementById('addressError').style.display = 'none';
+        document.getElementById('cityError').style.display = 'none';
+        document.getElementById('stateError').style.display = 'none';
+
+        // Prompt for further queries
+        setTimeout(() => {
+          addMessage("Do you have any other queries?", false);
+          quickRepliesContainer.innerHTML = `
+            <div class="edu-chat-widget-quick-reply" data-query="Yes, continue queries">Yes</div>
+            <div class="edu-chat-widget-quick-reply" data-query="No, any other queries?">No</div>
+          `;
+          attachQuickReplyListeners();
+        }, 500);
+      }
+
+      // Function to convert image URL to Base64
+      async function imageToBase64(url) {
+        try {
+          console.log('Fetching logo from URL:', url);
+          const response = await fetch(url, { mode: 'cors' });
+          if (!response.ok) throw new Error(`Failed to fetch image: ${response.statusText}`);
+          const blob = await response.blob();
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+        } catch (error) {
+          console.error('Error converting image to Base64:', error.message);
+          throw error;
+        }
+      }
+
+      // Generate and download PDF
+      async function generatePDF() {
+        console.log('Generating PDF with formData:', formData);
+        const doc = new jsPDF();
+        const margin = 15;
+        let y = 20;
+
+        // Add logo using Base64
+        const logoUrl = './ai.png';  // Updated to match the logo used in the header
+        try {
+          console.log('Attempting to load logo...');
+          const logoBase64 = await imageToBase64(logoUrl);
+          console.log('Logo Base64 loaded successfully');
+          doc.addImage(logoBase64, 'PNG', margin, y, 50, 15);
+          y += 25;
+        } catch (error) {
+          console.warn('Logo loading failed:', error.message);
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text('Logo not available', margin, y);
+          y += 10;
+        }
+
+        // Header
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Admission Application Acknowledgment', margin, y);
+        y += 10;
+        doc.setLineWidth(0.5);
+        doc.line(margin, y, 195, y);
+        y += 15;
+
+        // Personal Information
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Personal Information', margin, y);
+        y += 10;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Full Name: ${formData.fullName || 'N/A'}`, margin, y);
+        y += 10;
+        doc.text(`Email: ${formData.email || 'N/A'}`, margin, y);
+        y += 10;
+        doc.text(`Phone: ${formData.phone || 'N/A'}`, margin, y);
+        y += 15;
+
+        // Course Information
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Course Information', margin, y);
+        y += 10;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Course: ${courses[selectedCourse]?.name || 'N/A'}`, margin, y);
+        y += 10;
+        const courseFields = courses[selectedCourse]?.formFields || {};
+        for (const [fieldKey, field] of Object.entries(courseFields)) {
+          const value = formData[fieldKey] || 'Not provided';
+          doc.text(`${field.label}: ${value}${fieldKey.includes('Marks') ? '%' : ''}`, margin, y);
+          y += 10;
+        }
+        y += 5;
+
+        // Additional Information
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Additional Information', margin, y);
+        y += 10;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Address:', margin, y);
+        y += 7;
+        doc.text(doc.splitTextToSize(formData.address || 'N/A', 180), margin, y);
+        y += 15; // Extra space for multi-line address
+        doc.text(`City: ${formData.city || 'N/A'}`, margin, y);
+        y += 10;
+        doc.text(`State/UT: ${formData.state || 'N/A'}`, margin, y);
+        y += 15;
+
+        // Reference Number and Submission Date
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Application Details', margin, y);
+        y += 10;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Reference Number: ${referenceNumber || 'N/A'}`, margin, y);
+        y += 10;
+        doc.text(`Submission Date: ${new Date().toLocaleDateString()}`, margin, y);
+        y += 15;
+
+        // Footer
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'italic');
+        doc.text('Aksha Innovators - Built for smarter conversations', margin, 280);
+        doc.text('191, 2nd Floor, Appanna Building, K V Byregowda Circle, Jakkuru, Bengaluru-560064', margin, 287);
+        doc.text('connect@akshainnovators.com | +91 72597 95999', margin, 294);
+
+        // Save PDF
+        doc.save(`Admission_Acknowledgment_${referenceNumber || 'TEMP'}.pdf`);
+      }
+
+      // Form navigation and submission
+      nextStep1.addEventListener('click', () => {
+        if (validateStep1()) navigateForm(1);
+      });
+      prevStep3.addEventListener('click', () => navigateForm(-1));
+      submitForm.addEventListener('click', () => {
+        if (validateStep3()) {
+          step3.classList.remove('active');
+          confirmationStep.classList.add('active');
+          formProgressBar.style.width = '100%';
+          referenceNumber = `REF-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+          document.getElementById('referenceNumber').textContent = referenceNumber;
+          console.log('Form submitted:', formData); // For demo purposes; replace with actual submission logic
+        }
+      });
+      cancelForm.addEventListener('click', resetForm);
+      closeForm.addEventListener('click', resetForm);
+      downloadPDF.addEventListener('click', async () => {
+        await generatePDF(); // Wait for PDF generation to complete
+        resetForm(); // Reset form after PDF is generated
+      });
+
+    }); // Close DOMContentLoaded event listener
+  </script>
+</body>
+</html> 
